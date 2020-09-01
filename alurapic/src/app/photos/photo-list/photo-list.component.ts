@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { PhotoService } from '../../photos/photo/photo.service';
-import { Photo } from '../../photos/photo/photo';
 import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators'
+
+import { Photo } from '../photo/photo';
 
 @Component({
   selector: 'ap-photo-list',
@@ -10,23 +12,15 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class PhotoListComponent implements OnInit {
   photos: Photo[] = [];
+  filter: string = '';
+  debounce: Subject<string> = new Subject<string>();
 
-  constructor(
-    private activatedRoute: ActivatedRoute,
-    private photoService: PhotoService
-
-  ) { }
+  constructor(private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-
-    const userName = this.activatedRoute.snapshot.params.userName;
-
-    this.photoService
-      .listFromUser(userName)
-      .subscribe(photos =>
-        this.photos = photos,
-        err => console.log(err.message)
-      );
+    this.photos = this.activatedRoute.snapshot.data[`photos`];
+    this.debounce
+      .pipe(debounceTime(300))
+      .subscribe(filter => this.filter = filter);
   }
-
 }
