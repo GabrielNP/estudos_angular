@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { RouterModule } from '@angular/router';
 
+import { HomeComponent } from './home.component';
 import { SignInComponent } from './signin/signin.component';
 import { SignUpComponent } from './signup/signup.component';
 import { VMessageModule } from './../shared/components/vmessage/vmessage.module';
 
 @NgModule({
-    declarations: [ SignInComponent, SignUpComponent ],
+    declarations: [ HomeComponent, SignInComponent, SignUpComponent ],
     imports: [ 
         CommonModule,
         FormsModule,
